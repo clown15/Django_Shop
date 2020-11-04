@@ -11,6 +11,9 @@ class Product(models.Model):
     reguster_date = models.DateTimeField(
         auto_now_add=True, verbose_name="등록일자")
 
+    def __str__(self):
+        return self.name
+
     class Meta:
         db_table = 'fc_product'
         verbose_name = '상품'
