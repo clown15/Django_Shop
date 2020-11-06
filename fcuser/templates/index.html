@@ -1,4 +1,7 @@
 {% extends "base.html" %}
 {% block contents %}
-Hello Word
+Hello Word!<br>
+{% if email %}
+{{ email }}
+{% endif %}
 {% endblock %}
