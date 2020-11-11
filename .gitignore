@@ -8,3 +8,4 @@ order/migrations/
 product/__pycache__/
 product/migrations/
 fc_django/__pycache__/
+logs/
