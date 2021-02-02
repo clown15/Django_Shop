@@ -1,0 +1,11 @@
+db.sqlite3
+manage.py
+.vscode/
+fcuser/__pycache__/
+fcuser/migrations/
+order/__pycache__/
+order/migrations/
+product/__pycache__/
+product/migrations/
+fc_django/__pycache__/
+logs/
