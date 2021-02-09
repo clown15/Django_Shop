@@ -2,7 +2,7 @@
 <!-- setting.py에서 추가후 load가능 -->
 {% load humanize %}
 {% block contents %}
-<div class="orw mt-5">
+<div class="row mt-5">
     <div class="col-12">
         <table class="table table-light">
             <thead class="thead-light">
@@ -16,8 +16,8 @@
             <tbody class="text-dark">
                 {% for product in product_list %}
                 <tr>
-                    <th scope="row"></th>
-                    <th>{{ product.name }}</th>
+                    <th scope="row">{{ product.id }}</th>
+                    <th><a href="/product/{{ product.id }}">{{ product.name }}</a></th>
                     <!-- 3자리마다 .추가 -->
                     <th>{{ product.price|intcomma }}원</th>
                     <th>{{ product.register_date|date:"Y-m-d H:i" }}</th>
