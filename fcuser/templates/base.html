@@ -16,6 +16,15 @@
         {% endblock %}
     </head>
     <body>
+        <!-- {{ request.path }} -->
+        <!-- {% if not user.is_authenticated %}
+            {% if "product" in request.path %}
+                <script>
+                    alert("로그인이 필요합니다.");
+                    location.href="/login/";
+                </script>
+            {% endif %}
+        {% endif %} -->
         <div class="container">
             {% block contents %}
             {% endblock %}

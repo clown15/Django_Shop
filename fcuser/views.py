@@ -4,7 +4,7 @@ from .forms import RegisterForm,LoginForm
 # Create your views here.
 
 def index(request):
-    return render(request,"index.html", {'email':request.session.get('user')})
+    return render(request,"index.html", {'user':request.session.get('user')})
 
 class RegisterView(FormView):
     template_name="register.html"

@@ -9,19 +9,19 @@
                 <tr>
                     <th scope="col">#</th>
                     <th scope="col">상품명</th>
-                    <th scope="col">가격</th>
-                    <th scope="col">등록날짜</th>
+                    <th scope="col">수량</th>
+                    <th scope="col">주문날짜</th>
                 </tr>
             </thead>
             <tbody class="text-dark">
-                {% for product in product_list %}
+                {% for order in order_list %}
                 <tr>
-                    <th scope="row">{{ product.id }}</th>
-                    <th><a href="/product/{{ product.id }}">{{ product.name }}</a></th>
+                    <th scope="row">{{ order.id }}</th>
+                    <th>{{ order.product }}</a></th>
                     <!-- 3자리마다 .추가 -->
                     <!-- |가 humanize에 있는 필터를 사용하는것 -->
-                    <th>{{ product.price|intcomma }}원</th>
-                    <th>{{ product.register_date|date:"Y-m-d H:i" }}</th>
+                    <th>{{ order.quantity|intcomma }}개</th>
+                    <th>{{ order.register_date|date:"Y-m-d H:i" }}</th>
                 </tr>
                 {% endfor %}
             </tbody>
