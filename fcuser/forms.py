@@ -25,11 +25,21 @@ class RegisterForm(forms.Form):
         label="비밀번호 확인"
     )
 
+    level = forms.ChoiceField(
+        choices=(
+            ("user","고객"),
+            ("admin","관리자")
+        ),
+        required=True,
+        label="등급"
+    )
+
     def clean(self):
         cleaned_data = super().clean()
         email = cleaned_data.get("email")
         password = cleaned_data.get("password")
         re_password = cleaned_data.get("re_password")
+        level = cleaned_data.get("level")
 
         if password and re_password:
             if password != re_password:
@@ -39,7 +49,8 @@ class RegisterForm(forms.Form):
                 #회원가입
                 fcuser = Fcuser(
                     email=email,
-                    password=make_password(password)
+                    password=make_password(password),
+                    level=level
                 )
                 fcuser.save()
 
