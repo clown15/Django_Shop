@@ -27,22 +27,8 @@ class RegisterForm(forms.Form):
         cleaned_data = super().clean()
         quantity = cleaned_data.get('quantity')
         product = cleaned_data.get('product')
-        fcuser = self.request.session.get('user')
 
-        if quantity and product and fcuser:
-            # db와 동시 처리를 위함
-            # ex) 재고 관리
-            with transaction.atomic():
-                product=Product.objects.get(pk=product)
-                order = Order(
-                    quantity = quantity,
-                    product = product,
-                    fcuser = Fcuser.objects.get(email=fcuser)
-                )
-                order.save()
-                product.stock -= quantity
-                product.save()
-        else:
+        if not (quantity and product):
             self.product=product
             self.add_error("quantity","값이 없습니다.")
             self.add_error("product","상품이 선택되지 않았습니다.")

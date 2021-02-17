@@ -1,10 +1,13 @@
-from django.shortcuts import redirect
+from django.shortcuts import render,redirect
 from django.views.generic.edit import FormView
 from django.views.generic import ListView
 from django.utils.decorators import method_decorator
 from .forms import RegisterForm
 from fcuser.decorators import login_required
 from .models import Order
+from product.models import Product
+from fcuser.models import Fcuser
+from django.db import transaction
 
 # Create your views here.
 
@@ -13,6 +16,23 @@ class OrderCreate(FormView):
     form_class = RegisterForm
     success_url = '/product/'
     
+    # 주문 성공시
+    def form_valid(self,form):
+        # db와 동시 처리를 위함
+        # ex) 재고 관리
+        with transaction.atomic():
+            product=Product.objects.get(pk=form.data.get("product"))
+            order = Order(
+                quantity = form.data.get("quantity"),
+                product = product,
+                fcuser = Fcuser.objects.get(email=self.request.session.get("user"))
+            )
+            order.save()
+            product.stock -= int(form.data.get("quantity"))
+            product.save()
+
+        return super().form_valid(form)
+
     # 주문 실패시
     def form_invalid(self,form):
         return redirect('/product/'+str(form.product))

@@ -1,6 +1,6 @@
 from django import forms
 from .models import Fcuser
-from django.contrib.auth.hashers import check_password,make_password
+from django.contrib.auth.hashers import check_password
 
 class RegisterForm(forms.Form):
     email = forms.EmailField(
@@ -41,18 +41,14 @@ class RegisterForm(forms.Form):
         re_password = cleaned_data.get("re_password")
         level = cleaned_data.get("level")
 
-        if password and re_password:
-            if password != re_password:
-                self.add_error("password","비민번호가 서로 다릅니다.")
-                self.add_error("re_password","비민번호가 서로 다릅니다.")
-            else:
-                #회원가입
-                fcuser = Fcuser(
-                    email=email,
-                    password=make_password(password),
-                    level=level
-                )
-                fcuser.save()
+        try:
+            fcuser = Fcuser.objects.get(email=email)
+            self.add_error("email","이미 가입된 이메일 입니다.")
+        except Fcuser.DoesNotExist:
+            if password and re_password:
+                if password != re_password:
+                    self.add_error("password","비민번호가 서로 다릅니다.")
+                    self.add_error("re_password","비민번호가 서로 다릅니다.")
 
 class LoginForm(forms.Form):
     email = forms.EmailField(
@@ -78,10 +74,8 @@ class LoginForm(forms.Form):
         if email and password:
             try:
                 fcuser = Fcuser.objects.get(email=email)
+
+                if not check_password(password ,fcuser.password):
+                    self.add_error("password","비밀번호가 틀립나디.")
             except Fcuser.DoesNotExist:
                 self.add_error("email","아이디가 존재하지 않습니다.")
-
-            if not check_password(password ,fcuser.password):
-                self.add_error("password","비밀번호가 틀립나디.")
-            else:
-                self.email=fcuser.email
