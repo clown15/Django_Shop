@@ -1,8 +1,8 @@
 db.sqlite3
 manage.py
 .vscode/
-fcuser/__pycache__/
-order/__pycache__/
-product/__pycache__/
-fc_django/__pycache__/
+fc_shop/fcuser/__pycache__/
+fc_shop/order/__pycache__/
+fc_shop/product/__pycache__/
+fc_shop/fc_django/__pycache__/
 logs/

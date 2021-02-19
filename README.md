@@ -9,3 +9,5 @@ pip 21.0
 
 django version
 3.1.5
+
+fc_shop는 강의보면서
