@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block contents %}
+<div class="row mt-5">
+    <div class="col-12">
+        <form method="POST" action="">
+            {% csrf_token %}
+            {% for field in form %}
+                <label for="{{ field.id_for_label }}">{{field.label }}</label>
+                <input type="{{ field.field.widget.input_type }}" class="form-control" id="{{ field.id_for_label }}" placeholder="{{ field.label }}" name="{{ field.name }}"/>
+                {% if field.errors %}
+                    <span style="color:red;">{{ field.errors }}</span>
+                {% endif %}
+            {% endfor %}
+            <button class="w-100 btn btn-lg btn-primary" type="submit">Sign In</button> 
+        </form>
+    </div>
+</div>
+{% endblock %}
