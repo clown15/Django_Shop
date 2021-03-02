@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% load humanize %}
+{% block contents %}
+<div class="row mt-5">
+    <div class="col-12">
+        <table class="table table-hover">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">상품명</th>
+                <th scope="col">가격</th>
+                <th scope="col">재고</th>
+                <th scope="col">등록일</th>
+              </tr>
+            </thead>
+            <tbody>
+                {% for product in product_list %}   
+                    <tr>
+                        <th scope="row">{{ product.id }}</th>
+                        <td>{{ product.name }}</td>
+                        <td>{{ product.price|intcomma }}</td>
+                        <td>{{ product.stock|intcomma }}</td>
+                        <td>{{ product.creation_date|date:"Y-m-d H:i" }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
