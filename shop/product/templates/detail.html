@@ -10,7 +10,8 @@
             <ul class="list-group list-group-flush">
                 <li class="list-group-item">가격: {{ product.price|intcomma }}</li>
                 <li class="list-group-item">재고: {{ product.stock }}</li>
-                <li class="list-group-item">등록일: {{ product.creation_date }}</li>
+                <li class="list-group-item">등록일: {{ product.creation_date|date:"Y-m-d" }}</li>
+                <li class="list-group-item">등록일: {{ product.creation_date|date:"Y-m-d" }}</li>
                 <li class="list-group-item">{{ product.info|safe }}</li>
             </ul>
         </div>
