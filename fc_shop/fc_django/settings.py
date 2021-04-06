@@ -30,7 +30,20 @@ ALLOWED_HOSTS = ['*']
 
 # Application definition
 
+BATON = {
+    'SITE_HEADER' : '관리자',
+    # 사이트 하단 문구
+    'SITE_TITLE' : '개발',
+    'INDEX_TITLE' : '관리자페이지',
+    #'SUPPORT_HREF' : 'https://www.google.com',
+    'SUPPORT_HREF' : 'mailto:test@naver.com',
+    'COPYRIGHT' : 'copyright © 2021 04 06',
+    'POWERED_BY' : '<a href="https://fastcampus.co.kr">Fastcampus</a>',
+    'MENU_TITLE' : '메뉴',
+}
+
 INSTALLED_APPS = [
+    'baton',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -42,6 +55,7 @@ INSTALLED_APPS = [
     'fcuser',
     'order',
     'product',
+    'baton.autodiscover',
 ]
 
 MIDDLEWARE = [
