@@ -20,5 +20,15 @@ class OrderAdmin(admin.ModelAdmin):
     # table header text
     styled_status.short_description = '상태'
 
+    def changelist_view(self,request,extra_context=None):
+        extra_context = {'title':'주문 목록'}
+        return super().changelist_view(request,extra_context)
+
+    def changeform_view(self,request,object_id=None,form_url='',extra_context=None):
+        order = Order.objects.get(pk = object_id)
+        extra_context = {'title':f'{order.fcuser.email}의 {order.product.name} 주문수정'}
+        
+        return super().changeform_view(request,object_id,form_url,extra_context)
+
 
 admin.site.register(Order,OrderAdmin)
