@@ -52,9 +52,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.humanize',
     'rest_framework',
-    'fcuser',
-    'order',
-    'product',
+    # app의 별칭을 설정해주기 위해 app이름이 아니라 apps.py -> class의 경로로 설정
+    # 관리자 페이지의 사이드 메뉴 이름
+    'fcuser.apps.FcuserConfig',
+    'order.apps.OrderConfig',
+    'product.apps.ProductConfig',
     'baton.autodiscover',
 ]
 
