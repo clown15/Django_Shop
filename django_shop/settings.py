@@ -25,7 +25,7 @@ SECRET_KEY = '2^77s39q3)_wj=909gk_7($jg1=aligey6ag_%nd7%jd(!_ima'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
