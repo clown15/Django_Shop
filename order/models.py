@@ -8,6 +8,7 @@ class Order(models.Model):
     total_price = models.IntegerField(verbose_name="가격")
     creation_date = models.DateTimeField(auto_now_add=True,verbose_name="등록일")
 
+    # admin 페이지에서 값을 추가하면서 객체를 불러올때 문자열로 보여주기 위함
     def __str__(self):
         return str(self.orderer)+' '+str(self.product)
 
