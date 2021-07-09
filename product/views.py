@@ -23,3 +23,9 @@ class ProductRegister(FormView):
             "request":self.request,
         })
         return kw
+
+class ProductDetail(DetailView):
+    template_name = 'detail.html'
+    queryset = Product.objects.all()
+    # html에서 사용할 변수명
+    context_object_name = "product"

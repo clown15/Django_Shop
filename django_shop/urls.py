@@ -16,7 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from user.views import index,SignUpView,SignInView
-from product.views import productList,ProductRegister
+from product.views import productList,ProductRegister,ProductDetail
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -25,4 +25,5 @@ urlpatterns = [
     path('signin/',SignInView.as_view()),
     path('product/',productList.as_view()),
     path('product/register/',ProductRegister.as_view()),
+    path('product/<int:pk>/',ProductDetail.as_view()),
 ]
