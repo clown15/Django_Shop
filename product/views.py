@@ -4,6 +4,8 @@ from django.views.generic.edit import FormView
 from .models import Product
 from .forms import Product_Register
 from order.forms import RegisterForm as OrderForm
+from django.utils.decorators import method_decorator
+from user.decorators import admin_required
 
 # Create your views here.
 
@@ -12,6 +14,7 @@ class productList(ListView):
     template_name = "product.html"
     context_object_name = "product_list"
 
+@method_decorator(admin_required,name="dispatch")
 class ProductRegister(FormView):
     template_name = 'product_register.html'
     form_class = Product_Register
