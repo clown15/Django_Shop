@@ -3,6 +3,7 @@ from django.views.generic import ListView,DetailView
 from django.views.generic.edit import FormView
 from .models import Product
 from .forms import Product_Register
+from order.forms import RegisterForm as OrderForm
 
 # Create your views here.
 
@@ -29,3 +30,10 @@ class ProductDetail(DetailView):
     queryset = Product.objects.all()
     # html에서 사용할 변수명
     context_object_name = "product"
+
+    # form에 원하는 form을 추가하기위함
+    def get_context_data(self,**kwargs):
+        context = super().get_context_data(**kwargs)
+        context['form'] = OrderForm(self.request)
+        
+        return context
