@@ -27,7 +27,8 @@ class Product_Register(forms.Form):
     )
     info = forms.CharField(
         widget=forms.Textarea,
-        label = "상품설명"
+        label = "상품설명",
+        required = False,
     )
 
     def clean(self):
@@ -37,11 +38,12 @@ class Product_Register(forms.Form):
         stock = cleaned_data.get('stock')
         info = cleaned_data.get('info')
 
-        product = Product(
-            name = name,
-            price = price,
-            stock = stock,
-            info = info,
-            creator = User.objects.get(email=self.request.session.get('user')),
-        )
-        product.save()
+        if name and price and stock:
+            product = Product(
+                name = name,
+                price = price,
+                stock = stock,
+                info = info,
+                creator = User.objects.get(email=self.request.session.get('user')),
+            )
+            product.save()

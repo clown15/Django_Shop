@@ -34,8 +34,9 @@ class ProductDetail(DetailView):
     # html에서 사용할 변수명
     context_object_name = "product"
 
-    # form에 원하는 form을 추가하기위함
+    # 생성된 forms.py를 기반으로 생성된 form에 원하는 form을 추가하기위함
     def get_context_data(self,**kwargs):
+        # 기본 구현을 호출해 context를 가져온다
         context = super().get_context_data(**kwargs)
         context['form'] = OrderForm(self.request)
         

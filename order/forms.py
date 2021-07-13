@@ -47,3 +47,5 @@ class RegisterForm(forms.Form):
         else:
             self.product = product.id
             self.add_error('quantity','수량이 입력되지 않았습니다.')
+
+        
