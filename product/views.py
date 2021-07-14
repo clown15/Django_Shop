@@ -6,6 +6,7 @@ from .forms import Product_Register
 from order.forms import RegisterForm as OrderForm
 from django.utils.decorators import method_decorator
 from user.decorators import admin_required
+from user.models import User
 
 # Create your views here.
 
@@ -41,3 +42,15 @@ class ProductDetail(DetailView):
         context['form'] = OrderForm(self.request)
         
         return context
+
+    def form_valid(self,form):
+        product = Product(
+            name = form.data.get('name'),
+            price = form.data.get('price'),
+            stock = form.data.get('stock'),
+            info = form.data.get('info'),
+            creator = User.objects.get(email=self.request.session.get('user')),
+        )
+        product.save()
+
+        return super().form_valid(form)

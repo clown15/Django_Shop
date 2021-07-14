@@ -1,6 +1,6 @@
 from django import forms
 from .models import User
-from django.contrib.auth.hashers import make_password,check_password
+from django.contrib.auth.hashers import check_password
 
 class SignUpForm(forms.Form):
     email = forms.EmailField(
@@ -55,14 +55,6 @@ class SignUpForm(forms.Form):
             if password != re_password:
                 self.add_error('password','비밀번호가 다릅니다.')
                 self.add_error('re_password','비밀번호가 다릅니다.')
-            else:
-                user = User(
-                    email = email,
-                    password = make_password(password),
-                    level = level
-                )
-
-                user.save()
 
 class SignInForm(forms.Form):
     email = forms.EmailField(
@@ -89,9 +81,6 @@ class SignInForm(forms.Form):
 
             if not check_password(password,user.password):
                 self.add_error('password','비밀번호가 다릅니다.')
-
-            else:
-                self.email = user.email
         
         except Fcuser.DoesNotExist:
             self.add_error("email","아이디가 존재하지 않습니다.")

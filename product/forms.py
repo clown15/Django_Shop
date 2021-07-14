@@ -38,12 +38,10 @@ class Product_Register(forms.Form):
         stock = cleaned_data.get('stock')
         info = cleaned_data.get('info')
 
-        if name and price and stock:
-            product = Product(
-                name = name,
-                price = price,
-                stock = stock,
-                info = info,
-                creator = User.objects.get(email=self.request.session.get('user')),
-            )
-            product.save()
+        if not name:
+            self.add_error('name','상품명을 입력하세요.')
+        if not price:
+            self.add_error('price','상품가격을 입력하세요.')
+        if not stock:
+            self.add_error('stock','수량을 입력하세요.')
+            

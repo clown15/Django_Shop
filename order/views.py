@@ -6,6 +6,8 @@ from user.models import User
 from django.utils.decorators import method_decorator
 from user.decorators import login_required
 from .models import Order
+from product.models import Product
+from django.db import transaction,IntegrityError
 
 # Create your views here.
 
@@ -21,6 +23,28 @@ class OrderCreate(FormView):
             "request":self.request,
         })
         return kw
+
+    def form_valid(self,form):
+        product = Product.objects.get(pk=form.data.get('product'))
+        try:
+            with transaction.atomic():
+                quantity = int(form.data.get('quantity'))
+                order = Order(
+                    quantity = quantity,
+                    product = product,
+                    orderer = User.objects.get(email=self.request.session.get('user')),
+                    total_price = product.price * quantity,
+                )
+
+                order.save()
+                product.stock -= quantity
+                product.save()
+        except IntegrityError:
+            form.add_error('quantity','남은 수량보다 많이 주문할 수 없습니다.')
+
+            return redirect('/product/'+str(product.id))
+
+        return super().form_valid(form)
 
     # 주문 실패시
     def form_invalid(self,form):
