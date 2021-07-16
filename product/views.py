@@ -7,6 +7,8 @@ from order.forms import RegisterForm as OrderForm
 from django.utils.decorators import method_decorator
 from user.decorators import admin_required
 from user.models import User
+from django.contrib.messages import get_messages
+from ast import literal_eval
 
 # Create your views here.
 
@@ -38,8 +40,15 @@ class ProductDetail(DetailView):
     # 생성된 forms.py를 기반으로 생성된 form에 원하는 form을 추가하기위함
     def get_context_data(self,**kwargs):
         # 기본 구현을 호출해 context를 가져온다
+        # context = super(ProductDetail, self).get_context_data(**kwargs)
         context = super().get_context_data(**kwargs)
         context['form'] = OrderForm(self.request)
+        print(context['form'])
+        # for message in get_messages(self.request):
+        #     dict_message = literal_eval(message.message)
+        #     if 'quantity' in dict_message:
+        #         context['form'].add_error('quantity',dict_message['quantity'])
+            # print(list(message))
         
         return context
 

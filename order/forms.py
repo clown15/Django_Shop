@@ -1,4 +1,6 @@
 from django import forms
+from django.contrib import messages
+from product.models import Product
 
 class RegisterForm(forms.Form):
     def __init__(self,request,*args,**kwargs):
@@ -20,9 +22,10 @@ class RegisterForm(forms.Form):
         quantity = cleaned_data.get('quantity')
         product = cleaned_data.get('product')
         
-        if not quantity:
-            # views.py 에서 product값을 사용해 redirect하기위함
-            self.product = product
-            self.add_error('quantity','수량이 입력되지 않았습니다.')
+        # views.py 에서 product값을 사용해 redirect하기위함
+        self.product = Product.objects.get(pk=product)
+        if quantity and quantity <= 0:
+            self.add_error('quantity',"입력된 값이 정상적이지 않습니다.")
+            # self.add_error('quantity','수량이 입력되지 않았습니다.')
 
         

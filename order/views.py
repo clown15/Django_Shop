@@ -8,6 +8,7 @@ from user.decorators import login_required
 from .models import Order
 from product.models import Product
 from django.db import transaction,IntegrityError
+from django.contrib import messages
 
 # Create your views here.
 
@@ -24,11 +25,20 @@ class OrderCreate(FormView):
         })
         return kw
 
+    # 값이 성공적으로 들어오면 실행되는 함수
     def form_valid(self,form):
-        product = Product.objects.get(pk=form.data.get('product'))
-        try:
+        product = form.product
+        quantity = int(form.data.get('quantity'))
+
+        if product.stock < quantity:
+            form.add_error('quantity','남은 수량보다 많이 주문할 수 없습니다.')
+            
+            return render(self.request, 'detail.html', {'form': form, 'product':product})
+            # return redirect('/product/'+str(product.id))
+        
+        else:
             with transaction.atomic():
-                quantity = int(form.data.get('quantity'))
+                
                 order = Order(
                     quantity = quantity,
                     product = product,
@@ -39,16 +49,12 @@ class OrderCreate(FormView):
                 order.save()
                 product.stock -= quantity
                 product.save()
-        except IntegrityError:
-            form.add_error('quantity','남은 수량보다 많이 주문할 수 없습니다.')
-
-            return redirect('/product/'+str(product.id))
-
+            
         return super().form_valid(form)
 
-    # 주문 실패시
+    # 값이 제대로 안들어 왔을때
     def form_invalid(self,form):
-        return redirect('/product/'+str(form.product))
+        return render(self.request, 'detail.html', {'form': form, 'product':form.product})
 
 # decorator호출
 # class view로 접근시 dispatch함수 호출

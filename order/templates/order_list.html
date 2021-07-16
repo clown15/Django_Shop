@@ -10,7 +10,9 @@
                     <th scope="col">#</th>
                     <th scope="col">상품명</th>
                     <th scope="col">수량</th>
+                    <th scope="col">금액</th>
                     <th scope="col">주문날짜</th>
+                    <th scope="col"></th>
                 </tr>
             </thead>
             <tbody class="text-dark">
@@ -22,7 +24,9 @@
                     <!-- 3자리마다 .추가 -->
                     <!-- |가 humanize에 있는 필터를 사용하는것 -->
                     <th>{{ order.quantity|intcomma }}개</th>
+                    <th>{{ order.total_price|intcomma }}원</th>
                     <th>{{ order.creation_date|date:"Y-m-d H:i" }}</th>
+                    <th>취소</th>
                 </tr>
                 {% endfor %}
             </tbody>
