@@ -16,19 +16,26 @@
                 </tr>
             </thead>
             <tbody class="text-dark">
-                {% for order in order_list %}
-                <tr>
-                    <!-- <th scope="row">{{ order.id }}</th> -->
-                    <th scope="row"></th>
-                    <th><a href="/product/">{{ order.product }}</a></th>
-                    <!-- 3자리마다 .추가 -->
-                    <!-- |가 humanize에 있는 필터를 사용하는것 -->
-                    <th>{{ order.quantity|intcomma }}개</th>
-                    <th>{{ order.total_price|intcomma }}원</th>
-                    <th>{{ order.creation_date|date:"Y-m-d H:i" }}</th>
-                    <th>취소</th>
-                </tr>
-                {% endfor %}
+                <form method="POST" action="/order/cancel/">
+                    {% csrf_token %}
+                    {% for order in order_list %}
+                    <tr>
+                        <!-- <th scope="row">{{ order.id }}</th> -->
+                        <th scope="row"></th>
+                        <th><a href="/product/{{ order.product.id }}">{{ order.product }}</a></th>
+                        <!-- 3자리마다 .추가 -->
+                        <!-- |가 humanize에 있는 필터를 사용하는것 -->
+                        <th>{{ order.quantity|intcomma }}개</th>
+                        <th>{{ order.total_price|intcomma }}원</th>
+                        <th>{{ order.creation_date|date:"Y-m-d H:i" }}</th>
+                        <!-- <th><input type="submit" value="{{ order.id }}" name="cancel">취소</th> -->
+                        <th>
+                            <button type="submit" class="btn-primary" name="cancel" value="{{ order.id }}">취소</button>
+                        </th>
+                        <!-- <th>{{ form }}</th> -->
+                    </tr>
+                    {% endfor %}
+                </form>
             </tbody>
         </table>
     </div>

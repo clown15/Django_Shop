@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.urls import path
 from user.views import index,SignOut,SignUpView,SignInView
 from product.views import productList,ProductRegister,ProductDetail
-from order.views import OrderCreate,OrderList
+from order.views import OrderCreate,OrderList,OrderCancel
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -30,4 +30,5 @@ urlpatterns = [
     path('product/<int:pk>/',ProductDetail.as_view()),
     path('order/create/',OrderCreate.as_view()),
     path('order/',OrderList.as_view()),
+    path('order/cancel/',OrderCancel.as_view()),
 ]

@@ -1,4 +1,17 @@
 {% extends "base.html" %}
 {% block contents %}
-{{ email }}
+    {% if email is None or not user %}
+        <div class="d-grid gap-2">
+        <button type="button" class="btn btn-primary" onclick="location.href='/signin/'">로그인</button>
+            <button type="button" class="btn btn-primary" 
+            onclick="location.href='/signup/'">회원가입</button>  
+        </div>
+    {% else %}
+        {{ email }}<br>
+        <div class="d-grid gap-2">
+            <button type="button" class="btn btn-primary" onclick="location.href='/product/'">상품목록</button>
+            <button type="button" class="btn btn-primary" onclick="location.href='/order/'">주문목록</button>
+            <button type="button" class="btn btn-primary" onclick="location.href='/signout/'">로그아웃</button>
+        </div>
+    {% endif %}
 {% endblock %}

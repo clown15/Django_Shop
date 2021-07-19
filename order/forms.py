@@ -28,4 +28,6 @@ class RegisterForm(forms.Form):
             self.add_error('quantity',"입력된 값이 정상적이지 않습니다.")
             # self.add_error('quantity','수량이 입력되지 않았습니다.')
 
-        
+class CancelForm(forms.Form):
+    pass
+    

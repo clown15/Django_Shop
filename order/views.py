@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect
 from django.views.generic.edit import FormView
 from django.views.generic import ListView
-from .forms import RegisterForm
+from .forms import RegisterForm,CancelForm
 from user.models import User
 from django.utils.decorators import method_decorator
 from user.decorators import login_required
@@ -75,3 +75,28 @@ class OrderList(ListView):
         queryset=Order.objects.filter(orderer=self.request.session.get('user')).order_by('pk')
 
         return queryset
+
+    def get_context_data(self,**kwargs):
+        context = super().get_context_data(**kwargs)
+        context['form'] = CancelForm()
+        
+        return context
+
+@method_decorator(login_required,name="dispatch")
+class OrderCancel(FormView):
+    form_class = CancelForm
+    success_url = '/order'
+
+    def form_valid(self,form):
+        with transaction.atomic():    
+            order = Order.objects.get(pk=form.data.get('cancel'))
+            product = Product.objects.get(pk=order.product.id)
+            
+            order.delete()
+            product.stock += order.quantity
+            product.save()
+
+        return redirect('/order/')
+
+    def form_invalid(self,form):
+        return redirect('/order/')
