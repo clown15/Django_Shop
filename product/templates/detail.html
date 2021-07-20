@@ -1,5 +1,22 @@
 {% extends "base.html" %}
 {% load humanize %}
+{% block header %}
+<script>
+    function order_create() {
+        $.ajax({
+            url: "/api/order/create",
+            type:'POST',
+            data:FormData($("form")),
+            success: function( result ) {
+                console.log(result);
+            },
+            error:function(retsult) {
+                console.log(result)
+            }
+        });
+    }
+</script>
+{% endblock %}
 {% block contents %}
     <div class="row mt-5">
         <div class="col-12">
@@ -25,7 +42,7 @@
                             <span style="color: red">{{ field.errors }}</span>
                             {% endif %}
                             {% endfor %}
-                            <button class="btn-primary" type="submit">주문하기</button>
+                            <button class="btn-primary" onclick="order_create();return false;">주문하기</button>
                         </form>
                     </li>
                     <!-- 3자리마다 .추가 -->

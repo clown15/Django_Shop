@@ -7,8 +7,12 @@ from django.utils.decorators import method_decorator
 from user.decorators import login_required
 from .models import Order
 from product.models import Product
-from django.db import transaction,IntegrityError
+from django.db import transaction
 from django.contrib import messages
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status,viewsets,generics,mixins
+from .serializers import OrderSerializer
 
 # Create your views here.
 
@@ -35,6 +39,8 @@ class OrderCreate(FormView):
             
             return render(self.request, 'detail.html', {'form': form, 'product':product})
             # return redirect('/product/'+str(product.id))
+        if quantity == 0:
+            form.add_error('quantity','1이상의 값을 입력해야 합니다.')
         
         else:
             with transaction.atomic():
@@ -100,3 +106,46 @@ class OrderCancel(FormView):
 
     def form_invalid(self,form):
         return redirect('/order/')
+
+# class OrderCreateAPI(generics.GenericAPIView,mixins.CreateModelMixin):
+#     queryset = Order.objects.all()
+#     serializer_class = OrderSerializer
+    
+#     def post(self,request,*args,**kwargs):
+#         return self.create(self,*args,**kwargs)
+
+# class OrderCreateAPI(APIView):
+#     def post(self, request, format=None):
+#         serializer = OrderSerializer(data=request.data)
+#         print(self)
+#         # if serializer.is_valid():
+#         #     serializer.save()
+#         return Response(serializer.data, status=status.HTTP_201_CREATED)
+        # return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+# class OrderDeleteAPI(generics.GenericAPIView,mixins.DestroyModelMixin):
+#     queryset = Order.objects.all()
+#     serializer_class = OrderSerializer
+
+#     def delete(self, request, *args, **kwargs):
+#         with transaction.atomic():    
+#             order = Order.objects.get(pk=kwargs.get('pk'))
+#             product = Product.objects.get(pk=order.product.id)
+            
+#             order.delete()
+#             product.stock += order.quantity
+#             product.save()
+            
+#         return self.destroy(request, *args, **kwargs)
+class OrderDeleteAPI(APIView):
+    def delete(self, request, pk, format=None):
+        with transaction.atomic():    
+            order = Order.objects.get(pk=pk)
+            if self.request.session.get('user') == order.orderer:
+                product = Product.objects.get(pk=order.product.id)
+            
+                order.delete()
+                product.stock += order.quantity
+                product.save()
+
+        return Response(status=status.HTTP_204_NO_CONTENT)

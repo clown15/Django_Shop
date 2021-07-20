@@ -17,7 +17,9 @@ from django.contrib import admin
 from django.urls import path
 from user.views import index,SignOut,SignUpView,SignInView
 from product.views import productList,ProductRegister,ProductDetail
-from order.views import OrderCreate,OrderList,OrderCancel
+from order.views import (
+    OrderCreate,OrderList,OrderCancel,OrderCreateAPI,OrderDeleteAPI
+)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -31,4 +33,6 @@ urlpatterns = [
     path('order/create/',OrderCreate.as_view()),
     path('order/',OrderList.as_view()),
     path('order/cancel/',OrderCancel.as_view()),
+    path('api/order/create/',OrderCreateAPI.as_view()),
+    path('api/order/delete/<int:pk>',OrderDeleteAPI.as_view()),
 ]

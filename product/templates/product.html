@@ -1,24 +1,6 @@
 {% extends "base.html" %}
 <!-- setting.py에서 추가후 load가능 -->
 {% load humanize %}
-{% block header %}
-<script>
-    function product_detail(id) {
-        $.ajax({
-            url: "/api/product/"+id,
-            success: function( result ) {
-                $("#prod-"+id).popover({
-                    html:true,
-                    content:result.price+"<br/>"+result.description
-                }).popover("show");
-            }
-        });
-    }
-    function product_leave(id) {
-        $("#prod-"+id).popover("hide");
-    }
-</script>
-{% endblock %}
 {% block contents %}
 <div class="row mt-5">
     <div class="col-12">
@@ -36,7 +18,7 @@
                 {% for product in product_list %}
                 <tr>
                     <th scope="row">{{ product.id }}</th>
-                    <th><a id="prod-{{ product.id }}" href="/product/{{ product.id }}" onmouseenter="product_detail({{ product.id }});" onmouseleave="product_leave({{ product.id }});">{{ product.name }}</a></th>
+                    <th><a id="{{ product.id }}" href="/product/{{ product.id }}">{{ product.name }}</a></th>
                     <!-- 3자리마다 .추가 -->
                     <!-- |가 humanize에 있는 필터를 사용하는것 -->
                     <th>{{ product.price|intcomma }}원</th>
